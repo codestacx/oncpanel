@@ -37,6 +37,17 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 </style>
 </head>
 <body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Corona Live Data</a>
+
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="{% url 'index' %}">Back to Results</a>
+        </li>
+    </ul>
+</nav>
+
+<br/><br/>
 
 <div class="container">
   <div class="row">
@@ -68,8 +79,10 @@ tr:nth-child(even) {background-color: #f2f2f2;}
   <div class="card-header">
       <div style="margin-left: 100px; margin-top: 10px;" id="MyClockDisplay" class="clock" onload="showTime()"></div>
    <progress style="float:right" value="0" max="10" id="progressBar"></progress>
-  </div>
 
+
+  </div>
+  <p id="counter" style="text-align: center">Stats will show  in <code> <span id="count">10</span> </code>seconds...</p>
 </div>
 <hr/>
 <h2>Live Coronoa Word Wide Data </h2>
@@ -108,6 +121,35 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 </div>
 
 <script>
+//counter
+ window.onload = function(){
+
+(function(){
+  var counter = 10;
+
+  setInterval(function() {
+    counter--;
+    if (counter >= 0) {
+      span = document.getElementById("count");
+      span.innerHTML = counter;
+    }
+    // Display 'counter' wherever you want to display it.
+    if (counter === 0) {
+    //    alert('this is where it happens');
+        clearInterval(counter);
+        document.getElementById('counter').style.display='none'
+    }
+
+  }, 1000);
+
+})();
+
+}
+
+//end counter
+
+
+
 
 function showTime(){
     var date = new Date();
@@ -163,34 +205,6 @@ function progressbar(){
 //createTable();
 counter  = 0
 function createTable(data) {
-
-
-    /*
-
-
-     information['country'] = cells[0].get_text()
-        information['total_cases'] = cells[1].get_text()
-        information['new_cases'] = cells[2].get_text()
-        information['total_death'] = cells[3].get_text()
-        information['new_deaths'] = cells[4].get_text()
-        information['total_recovered'] = cells[5].get_text()
-        information['active_cases'] = cells[6].get_text()
-        information['serious_critcial'] = cells[7].get_text()
-        information['tot_cases'] = cells[8].get_text()
-        information['deaths'] = cells[9].get_text()
-        information['total_tests'] = cells[10].get_text()
-        information['tests'] = cells[11].get_text()
-
-
-        mapper = {
-
-            0: 'country',
-            1:'total_cases', 2:'new_cases',3:'total_death',4:'new_deaths',5:'total_recovered',6:'active_cases',
-            7:'serious_critical',8:'tot_cases',9:'deaths',10:'total_tests',11:'tests'
-        }
-     */
-
-
       mapper = {
 
             0: 'country',

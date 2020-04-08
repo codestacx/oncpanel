@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script
+			  src="https://code.jquery.com/jquery-3.4.1.js"
+			  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+			  crossorigin="anonymous"></script>
+<style>
+
+body{
+    margin: 10px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+.clock {
+    position: absolute;
+
+    transform: translateX(-50%) translateY(-50%);
+    color: #17D4FE;
+    font-size: 20px;
+    font-family: Orbitron;
+    letter-spacing: 7px;
+
+
+
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+</style>
+</head>
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Chill Font</a>
+
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="{% url 'results' %}">Back to Results</a>
+        </li>
+    </ul>
+</nav>
+
+<br/><br/>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+     Total Cases <code>  <span id="cases"></span></code>
+    </div>
+    <div class="col-sm">
+    Total Deaths  <code> <span id="deaths"></span></code>
+    </div>
+    <div class="col-sm">
+        Total Recovered <code>  <span id="recovered"></span></code>
+    </div>
+  </div>
+     <div class="row">
+    <div class="col-sm">
+     New Cases <code>  <span id="newcases"></span></code>
+    </div>
+    <div class="col-sm">
+    New Deaths  <code> <span id="newdeaths"></span></code>
+    </div>
+    <div class="col-sm">
+        Active Cases <code>  <span id="active_cases"></span></code>
+    </div>
+  </div>
+</div>
+<hr/>
+
+<div class="card">
+  <div class="card-header">
+      <div style="margin-left: 100px; margin-top: 10px;" id="MyClockDisplay" class="clock" onload="showTime()"></div>
+   <progress style="float:right" value="0" max="10" id="progressBar"></progress>
+
+
+  </div>
+  <p id="counter" style="text-align: center">Stats will show  in <code> <span id="count">10</span> </code>seconds...</p>
+</div>
+<hr/>
+<h2>Live Coronoa Word Wide Data </h2>
+
+<hr/>
+<input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name"/>
+
+<br>
+<table id="table" border="1" style="width: 100%">
+      <thead>
+        <tr>
+      <th>Country/Other</th>
+      <th>Total Cases</th>
+      <th>New cases</th>
+      <th>Total deaths</th>
+      <th>New deaths</th>
+      <th>Total Recovered</th>
+      <th>Active Cases</th>
+      <th>Seious Critical</th>
+      <th>Tot Cases</th>
+      <th>Deaths </th>
+      <th>Total tests</th>
+      <th>Tests</th>
+    </tr>
+      </thead>
+      <tbody id="tbody">
+
+      </tbody>
+
+
+
+
+
+
+  </table>
+</div>
+
+<script>
+//counter
+ window.onload = function(){
+
+(function(){
+  var counter = 10;
+
+  setInterval(function() {
+    counter--;
+    if (counter >= 0) {
+      span = document.getElementById("count");
+      span.innerHTML = counter;
+    }
+    // Display 'counter' wherever you want to display it.
+    if (counter === 0) {
+    //    alert('this is where it happens');
+        clearInterval(counter);
+        document.getElementById('counter').style.display='none'
+    }
+
+  }, 1000);
+
+})();
+
+}
+
+//end counter
+
+
+
+
+function showTime(){
+    var date = new Date();
+    var h = date.getHours(); // 0 - 23
+    var m = date.getMinutes(); // 0 - 59
+    var s = date.getSeconds(); // 0 - 59
+    var session = "AM";
+
+    if(h == 0){
+        h = 12;
+    }
+
+    if(h > 12){
+        h = h - 12;
+        session = "PM";
+    }
+
+    h = (h < 10) ? "0" + h : h;
+    m = (m < 10) ? "0" + m : m;
+    s = (s < 10) ? "0" + s : s;
+
+    var time = h + ":" + m + ":" + s + " " + session;
+    document.getElementById("MyClockDisplay").innerText = time;
+    document.getElementById("MyClockDisplay").textContent = time;
+
+    setTimeout(showTime, 1000);
+
+}
+
+showTime();
+      mapper = {
+
+            0: 'country',
+            1:'total_cases', 2:'new_cases',3:'total_death',4:'new_deaths',5:'total_recovered',6:'active_cases',
+            7:'serious_critcial',8:'tot_cases',9:'deaths',10:'total_tests',11:'tests'
+        }
+
+        console.log(mapper[0])
+//progressbar()
+
+
+function progressbar(){
+    var timeleft = 10;
+    var downloadTimer = setInterval(function(){
+          if(timeleft <= 0){
+            clearInterval(downloadTimer);
+          }
+          document.getElementById("progressBar").value = 10 - timeleft;
+          timeleft -= 1;
+        }, 3000);
+}
+
+//createTable();
+counter  = 0
+function createTable(data) {
+      mapper = {
+
+            0: 'country',
+            1:'total_cases', 2:'new_cases',3:'total_death',4:'new_deaths',5:'total_recovered',6:'active_cases',
+            7:'serious_critcial',8:'tot_cases',9:'deaths',10:'total_tests',11:'tests'
+        }
+
+    var tblbdy = document.createElement('tbody');
+
+    $("tbody").children().remove()
+    //document.getElementById('tbody').remo
+
+    total_cases = data[0]['total_cases']
+    total_deaths = data[0]['total_death']
+    total_recovered  = data[0]['total_recovered']
+
+    new_cases = data[0]['new_cases']
+    new_deaths = data[0]['new_deaths']
+    active_cases = data[0]['active_cases']
+
+    document.getElementById('cases').innerText = total_cases
+    document.getElementById('deaths').innerText=total_deaths
+    document.getElementById('recovered').innerText=total_recovered
+
+    document.getElementById('newcases').innerText = total_cases
+    document.getElementById('newdeaths').innerText=total_deaths
+    document.getElementById('active_cases').innerText=total_recovered
+
+
+    for (var i = 0; i <data.length; i++) {
+
+        var tblrw = document.createElement('tr');
+
+        for (var j = 0; j < 12; j++) {
+
+            var tbltd = document.createElement('td');
+            var tbldata = document.createTextNode(data[i][mapper[j]]);
+
+            tbltd.appendChild(tbldata);
+            tblrw.appendChild(tbltd);
+            tblbdy.appendChild(tblrw)
+            document.getElementById('tbody').appendChild(tblrw)
+
+        }
+    }
+
+  //  document.getElementById('here').innerHTML=tblbdy
+}
+function fun(){
+     $.ajax({
+                   type:'GET',
+                    dataType:'json',
+                    url:'{% url 'getresults' %}',
+
+                    success:function (data) {
+
+                            console.log(data);
+                            createTable(data)
+                          // console.log(data[0][0])
+
+
+                    }
+
+                });
+}
+
+
+
+
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+    window.setInterval(function(){
+         progressbar()
+       fun();
+       //createTable()
+
+}, 5000);
+</script>
+
+
+</body>
+</html>

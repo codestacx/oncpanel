@@ -3,14 +3,8 @@ from bs4 import BeautifulSoup
 import requests
 from bs4 import BeautifulSoup
 import requests
-import csv
-import shutil
 from django.http import HttpResponse
 import json
-from requests_html import HTMLSession
-session = HTMLSession()
-import string
-import random
 def index(request):
     return render(request, 'index.html')
 # Create your views here.
@@ -44,18 +38,15 @@ def dojob():
         information['total_tests'] = cells[10].get_text()
         information['tests'] = cells[11].get_text()
         data.append(information)
+        i=i+1
+        # if i==106:
+        #     break
     return data
 def job(request):
-    obj ={
-        'code':random.randrange(100000,999999,5)
-    }
     data = dojob()
-
-
-
     return HttpResponse(json.dumps(data), content_type="application/json", status=200)
-
 
 def results(request):
     return render(request,'results.html')
+
 
