@@ -55,7 +55,7 @@ queuelib==1.5.0
 reportlab==3.5.34
 requests==2.23.0
 requests-html==0.10.0
-rsa==3.4.2
+rsa==4.1
 s3transfer==0.3.3
 Scrapy==2.0.0
 service-identity==18.1.0
