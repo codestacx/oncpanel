@@ -45,7 +45,7 @@ pyee==7.0.1
 Pygments==2.6.1
 PyHamcrest==2.0.2
 pyOpenSSL==19.1.0
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 pyppeteer==0.0.25
 pyquery==1.4.1
 python-dateutil==2.8.1
